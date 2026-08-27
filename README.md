@@ -70,9 +70,11 @@ To run this application on your local machine:
 git clone [https://github.com/ritapardo/f1-pitwall-dashboard](https://github.com/ritapardo/f1-pitwall-dashboard.git)
 
 **2. Install dependencies:**
+```bash
 pip install -r requirements.txt
 
 **3. Launch the application:**
+```bash
 python -m streamlit run app.py  
 
 or 
