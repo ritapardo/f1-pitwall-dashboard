@@ -60,7 +60,7 @@ F1_PitWall/
     └── data_loader.py          # FastF1 caching logic and universal helper functions
 
 ---
-
+```
 ## 💻 Installation & Setup
 
 To run this application on your local machine:
@@ -68,11 +68,11 @@ To run this application on your local machine:
 **1. Clone the repository:**
 ```bash
 git clone [https://github.com/ritapardo/f1-pitwall-dashboard](https://github.com/ritapardo/f1-pitwall-dashboard.git)
-
+```
 **2. Install dependencies:**
 ```bash
 pip install -r requirements.txt
-
+```
 **3. Launch the application:**
 ```bash
 python -m streamlit run app.py  
@@ -80,7 +80,7 @@ python -m streamlit run app.py
 or 
 
 streamlit run app.py
-
+```
 ### ⚠️ A Note on Data Caching & API Limits
 This application pulls massive amounts of data from the `api.jolpi.ca` (Ergast mirror) and the FIA live timing servers. 
 
