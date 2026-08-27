@@ -1,0 +1,10 @@
+# Ignore FastF1 Cache
+cache/
+fastf1_http_cache.sqlite
+
+# Ignore Python Cache
+__pycache__/
+*.pyc
+
+# Ignore Streamlit config if it contains secrets
+.streamlit/
