@@ -1,4 +1,5 @@
 # 🏎️ F1 Pit Wall Strategy Dashboard
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://f1-pitwall-dashboard.streamlit.app)
 
 An interactive, live-data Formula 1 strategy and telemetry analysis application built with Python and Streamlit. 
 
@@ -9,6 +10,8 @@ This application transforms raw gigabytes of FIA timing, weather, and GPS data i
 ## 🚀 Project Overview
 
 Modern Formula 1 is driven by data. This project replicates the proprietary software used by F1 strategists on the pit wall. By connecting to the Ergast API and FIA Live Timing data (via FastF1), this dashboard processes millions of data points to provide actionable insights into race pace, strategic crossovers, and telemetry traces.
+
+---
 
 ## ✨ Key Features & Modules
 
@@ -81,12 +84,16 @@ or
 
 streamlit run app.py
 ```
+
+---
+
 ### ⚠️ A Note on Data Caching & API Limits
 This application pulls massive amounts of data from the `api.jolpi.ca` (Ergast mirror) and the FIA live timing servers. 
 
 * **Initial Load:** The first time you select a new session, it may take 30–60 seconds to download the telemetry.
 * **Smart Caching:** The app uses local caching. Once a race is loaded once, subsequent loads are instantaneous. If the external API times out, the app is engineered to gracefully fall back to the cached SQLite database.
 
+---
 
 ## ☁️ Cloud Demo vs. Local Execution
 
@@ -97,3 +104,4 @@ To provide a seamless portfolio demonstration, the app is hardcoded to serve **p
 
 **Want to unlock the full dynamic engine?**
 If you run this application locally on your machine (which uses a safe residential IP), you can revert the `app.py` race selection logic to its original dynamic state and analyze any session from 2023 to 2026.
+
