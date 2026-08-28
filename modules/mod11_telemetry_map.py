@@ -19,7 +19,6 @@ def render(year, selected_race, session_type, session_options):
             return
             
         st.markdown("### Telemetry Configuration")
-        # THIS IS THE NEW 3-COLUMN LAYOUT WITH THE ROTATION SLIDER
         col1, col2, col3 = st.columns(3)
         with col1:
             driver = st.selectbox("Select Driver", available_drivers)
@@ -32,20 +31,39 @@ def render(year, selected_race, session_type, session_options):
         fastest_lap = driver_laps.pick_fastest()
         
         if fastest_lap.empty or pd.isna(fastest_lap['LapTime']):
-            st.warning("Could not find a valid fast lap for this driver.")
+            st.warning(f"Could not find a valid fast lap for {driver}.")
             return
         
+        # 1. ACCURATE TEAM COLOR RETRIEVAL
         driver_info = session.get_driver(driver)
-        team_color = str(fastest_lap.get('TeamColor', 'FFFFFF'))
+        team_color = str(driver_info.get('TeamColor', 'FFFFFF')) if driver_info is not None else 'FFFFFF'
+        if not team_color or pd.isna(team_color):
+            team_color = 'FFFFFF'
+            
         lap_time_str = str(fastest_lap['LapTime']).split('.')[0][-5:] + "." + str(fastest_lap['LapTime']).split('.')[1][:3]
         
         st.markdown(render_driver_tag(driver, team_color), unsafe_allow_html=True)
         st.write(f"**Fastest Lap:** {lap_time_str} (Lap {int(fastest_lap['LapNumber'])})")
         
+        # 2. DEFENSIVE TELEMETRY / GPS EXTRACTION
         with st.spinner("Extracting GPS and mapping traces..."):
-            telemetry = fastest_lap.get_telemetry()
+            try:
+                telemetry = fastest_lap.get_telemetry()
+            except Exception:
+                # Fallback: attempt to load car telemetry directly if full merge fails
+                telemetry = fastest_lap.get_car_data().add_distance()
             
-        # 1. APPLY ROTATION MATRIX
+        if telemetry.empty or 'X' not in telemetry.columns or 'Y' not in telemetry.columns:
+            st.error(f"GPS coordinate tracking (X/Y) is incomplete or unavailable for {driver} in this session.")
+            return
+            
+        # Clean null values in coordinates or channels
+        telemetry = telemetry.dropna(subset=['X', 'Y']).copy()
+        if telemetry.empty:
+            st.error("No valid GPS coordinate points found for this lap.")
+            return
+
+        # 3. APPLY ROTATION MATRIX
         theta = np.radians(rotation)
         c, s = np.cos(theta), np.sin(theta)
         telemetry['X_rot'] = telemetry['X'] * c - telemetry['Y'] * s
@@ -59,6 +77,10 @@ def render(year, selected_race, session_type, session_options):
         }
         y_col = col_map[metric]
         
+        if y_col not in telemetry.columns:
+            st.error(f"Telemetry channel '{metric}' is not recorded for this lap.")
+            return
+        
         if metric == "Speed (km/h)":
             color_scale = "Turbo"
         elif metric == "Gear":
@@ -66,7 +88,7 @@ def render(year, selected_race, session_type, session_options):
         else:
             color_scale = "Inferno"
             
-        # 2. RENDER THE THICK CONTINUOUS MAP
+        # 4. RENDER MAP
         fig = px.scatter(
             telemetry,
             x="X_rot", 
