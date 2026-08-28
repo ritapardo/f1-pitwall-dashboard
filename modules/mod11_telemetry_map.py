@@ -50,14 +50,12 @@ def render(year, selected_race, session_type, session_options):
             try:
                 telemetry = fastest_lap.get_telemetry()
             except Exception:
-                # Fallback: attempt to load car telemetry directly if full merge fails
                 telemetry = fastest_lap.get_car_data().add_distance()
             
         if telemetry.empty or 'X' not in telemetry.columns or 'Y' not in telemetry.columns:
             st.error(f"GPS coordinate tracking (X/Y) is incomplete or unavailable for {driver} in this session.")
             return
             
-        # Clean null values in coordinates or channels
         telemetry = telemetry.dropna(subset=['X', 'Y']).copy()
         if telemetry.empty:
             st.error("No valid GPS coordinate points found for this lap.")
@@ -81,10 +79,15 @@ def render(year, selected_race, session_type, session_options):
             st.error(f"Telemetry channel '{metric}' is not recorded for this lap.")
             return
         
+        # --- NEW COLOR LOGIC ---
         if metric == "Speed (km/h)":
             color_scale = "Turbo"
         elif metric == "Gear":
-            color_scale = "Viridis"
+            color_scale = "Jet"
+        elif metric == "Throttle (%)":
+            color_scale = "Greens"
+        elif metric == "Brake (%)":
+            color_scale = "Reds"
         else:
             color_scale = "Inferno"
             
