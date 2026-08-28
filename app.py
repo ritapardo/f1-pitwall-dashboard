@@ -1,7 +1,6 @@
 import importlib
 import streamlit as st
 import pandas as pd
-import time
 from utils.data_loader import get_calendar
 
 # 1. BASE CONFIGURATION
@@ -52,54 +51,29 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 2. SIDEBAR: GLOBAL SETTINGS & MEMORY
+# 2. SIDEBAR: GLOBAL SETTINGS & MEMORY (DEMO MODE)
 st.sidebar.title("Settings")
 qp = st.query_params
 
-# Year Selection with Memory
-default_year = int(qp.get("year", 2024))
-year_list = [2026, 2025, 2024, 2023]
-year_index = year_list.index(default_year) if default_year in year_list else 0
-
-year = st.sidebar.selectbox("Select Year", year_list, index=year_index)
+# Year Selection (Demo Mode: Only 2026)
+year = st.sidebar.selectbox("Select Year", [2024], index=0)
 st.query_params["year"] = str(year)
 
-# Fetch Calendar & Race Selection with Memory
-calendar_df = get_calendar(year)
-race_names = calendar_df['EventName'].tolist()
+# Race Selection (Demo Mode: Only cached races)
+demo_races = ['Spanish Grand Prix', 'Dutch Grand Prix']
+default_race = qp.get("race", demo_races[0])
+race_index = demo_races.index(default_race) if default_race in demo_races else 0
 
-default_race = qp.get("race", race_names[0])
-race_index = race_names.index(default_race) if default_race in race_names else 0
-
-selected_race = st.sidebar.selectbox("Grand Prix", race_names, index=race_index)
+selected_race = st.sidebar.selectbox("Grand Prix", demo_races, index=race_index)
 st.query_params["race"] = selected_race
 
-# Validate Event Date
-race_info = calendar_df[calendar_df['EventName'] == selected_race].iloc[0]
-event_date = race_info['EventDate']
-
-if event_date > pd.Timestamp.now():
-    st.sidebar.warning(f"This event is scheduled for {event_date.strftime('%Y-%m-%d')}.")
-    st.sidebar.warning(f"Notice: The {selected_race} {year} hasn't happened yet. No telemetry data is available.")
-    st.stop()
-
-# DYNAMIC Session Selection (Includes all Free Practices, Sprints, etc.)
-session_options = {}
-for i in range(1, 6):
-    sess_name = race_info.get(f'Session{i}')
-    if pd.notna(sess_name) and sess_name != 'None' and sess_name != '':
-        session_options[sess_name] = sess_name
-
-session_list = list(session_options.keys())
-# Default to the final session of the weekend (usually the Race)
-default_session = qp.get("session", session_list[-1] if session_list else "")
-session_index = session_list.index(default_session) if default_session in session_list else (len(session_list) - 1)
-
-session_type = st.sidebar.selectbox("Session", session_list, index=session_index)
+# Session Selection (Demo Mode: Forced to 'Race')
+session_options = {'Race': 'Race'}
+session_type = st.sidebar.selectbox("Session", ['Race'], index=0)
 st.query_params["session"] = session_type
 
 
-# 3. SIDEBAR: NAVIGATION ROUTER (Now with Memory!)
+# 3. SIDEBAR: NAVIGATION ROUTER (Removed Season Evolution)
 st.sidebar.markdown("---")
 st.sidebar.title("Strategy Modules")
 
@@ -112,7 +86,6 @@ module_list = [
     "6. DRS Train Radar",
     "7. Crossover Point Alert",
     "8. Monte Carlo Oracle",
-    "9. Season Evolution",
     "10. Strategy Optimizer",
     "11. Telemetry Overlays",
     "12. Tactical Alert Matrix" 
@@ -125,18 +98,7 @@ module = st.sidebar.radio("Navigation:", module_list, index=module_index)
 st.query_params["module"] = module
 
 
-# 4. SIDEBAR: LIVE REFRESH CONTROLS
-st.sidebar.markdown("---")
-st.sidebar.title("Live Race Controls")
-live_mode = st.sidebar.toggle("Enable Live Auto-Refresh")
-
-if live_mode:
-    refresh_rate = st.sidebar.slider("Refresh Interval (Seconds)", min_value=30, max_value=120, value=30, step=10)
-    st.sidebar.warning(f"Live mode active. The dashboard will automatically update every {refresh_rate} seconds.")
-
-
-# 5. MODULE EXECUTION (SPA ROUTING)
-
+# 4. MODULE EXECUTION (SPA ROUTING)
 if module == "1. Tire Degradation Monitor":
     from modules import mod1_tire_deg
     importlib.reload(mod1_tire_deg)
@@ -177,11 +139,6 @@ elif module == "8. Monte Carlo Oracle":
     importlib.reload(mod8_monte_carlo)
     mod8_monte_carlo.render(year, selected_race, session_type, session_options)
 
-elif module == "9. Season Evolution":
-    from modules import mod9_season_evolution
-    importlib.reload(mod9_season_evolution)
-    mod9_season_evolution.render(year, selected_race, session_type, session_options)
-    
 elif module == "10. Strategy Optimizer":
     from modules import mod10_strategy_optimizer
     importlib.reload(mod10_strategy_optimizer)
@@ -196,8 +153,3 @@ elif module == "12. Tactical Alert Matrix":
     from modules import mod12_tactical_alert
     importlib.reload(mod12_tactical_alert)
     mod12_tactical_alert.render(year, selected_race, session_type, session_options)
-
-# 6. HYBRID REFRESH ENGINE
-if live_mode:
-    time.sleep(refresh_rate)
-    st.rerun()

@@ -86,3 +86,14 @@ This application pulls massive amounts of data from the `api.jolpi.ca` (Ergast m
 
 * **Initial Load:** The first time you select a new session, it may take 30–60 seconds to download the telemetry.
 * **Smart Caching:** The app uses local caching. Once a race is loaded once, subsequent loads are instantaneous. If the external API times out, the app is engineered to gracefully fall back to the cached SQLite database.
+
+
+## ☁️ Cloud Demo vs. Local Execution
+
+This repository is currently configured in **Cloud Demo Mode**. 
+Due to strict anti-bot firewalls on the official FIA and Ergast servers, hosting this application on cloud providers (like Streamlit Community Cloud) results in IP blocks when fetching live telemetry. 
+
+To provide a seamless portfolio demonstration, the app is hardcoded to serve **pre-cached data for the 2024 Spanish and Dutch Grand Prix**.
+
+**Want to unlock the full dynamic engine?**
+If you run this application locally on your machine (which uses a safe residential IP), you can revert the `app.py` race selection logic to its original dynamic state and analyze any session from 2023 to 2026.
