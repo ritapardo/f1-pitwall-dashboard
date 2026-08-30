@@ -25,7 +25,7 @@ The application is divided into a modular 12-part system, covering every aspect 
 6. **DRS Train Radar:** Identifies field compression and DRS dependency clusters.
 7. **Crossover Point Alert:** Determines the optimal lap to switch between Wet/Intermediate/Slick tires based on track evolution.
 8. **Monte Carlo Oracle:** Probabilistic race simulations using historical pace data.
-9. **Season Evolution:** Interactive trajectory tracking of the Drivers' Championship across the season.
+9. **Season Evolution:** Interactive trajectory tracking of the Drivers' Championship across the season. *(⚠️ Note: Disabled in Cloud Demo)*
 10. **Strategy Optimizer:** Calculates the fastest theoretical pit-stop strategy for a given race.
 11. **Telemetry Overlays:** High-resolution GPS track mapping using $X_{new} = X \cos(\theta) - Y \sin(\theta)$ rotation matrices to visualize throttle, braking, and gear traces across any lap.
 12. **Flash Tactical Alert Engine:** A live decision matrix that calculates the mathematical viability of pitting under a Virtual Safety Car (VSC), Safety Car (SC), or Red Flag based on track position and tire degradation models.
@@ -102,6 +102,9 @@ Due to strict anti-bot firewalls on the official FIA and Ergast servers, hosting
 
 To provide a seamless portfolio demonstration, the app is hardcoded to serve **pre-cached data for the 2024 Spanish and Dutch Grand Prix**.
 
+> **⚠️ Note on Module 9 (Season Evolution):** 
+> To render the championship trajectory, this module requires fetching and processing data from *every single race* in the calendar. To prevent memory overloads and API timeouts on the Streamlit cloud servers, this specific module is hidden in the live demo.
+
 **Want to unlock the full dynamic engine?**
-If you run this application locally on your machine (which uses a safe residential IP), you can revert the `app.py` race selection logic to its original dynamic state and analyze any session from 2023 to 2026.
+If you run this application locally on your machine (which uses a safe residential IP), you can revert the `app.py` race selection logic to its original dynamic state and analyze any session from 2023 to 2026, including the full Season Evolution module.
 
