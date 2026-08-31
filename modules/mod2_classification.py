@@ -6,7 +6,7 @@ def render(year, selected_race, session_type, session_options):
     st.title(f"Official Classification: {selected_race} {year}")
     
     try:
-        with st.spinner("Fetching official results...", expanded=True) as status:
+        with st.spinner("Fetching official results...") as status:
             results = load_session_results(year, selected_race, session_options[session_type])
             
         html_content = """

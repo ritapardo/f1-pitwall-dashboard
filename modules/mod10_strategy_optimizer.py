@@ -9,7 +9,7 @@ def render(year, selected_race, session_type, session_options):
     st.title(f"Dynamic Strategy Optimizer: {selected_race} {year}")
     
     try:
-        with st.spinner("Analyzing track telemetry, degradation slopes & pit loss...", expanded=True) as status:
+        with st.spinner("Analyzing track telemetry, degradation slopes & pit loss...") as status:
             laps = load_session_laps(year, selected_race, session_options[session_type])
             
         clean_laps = laps.dropna(subset=['LapTime', 'Compound', 'TyreLife']).copy()

@@ -7,7 +7,7 @@ def render(year, selected_race, session_type, session_options):
     st.title(f"Championship Season Evolution: {year}")
     
     try:
-        with st.spinner("Compiling season and sprint data...", expanded=True) as status:
+        with st.spinner("Compiling season and sprint data...") as status:
             df = get_season_standings(year)
             
         if df.empty:

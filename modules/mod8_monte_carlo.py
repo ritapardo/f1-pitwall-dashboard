@@ -8,7 +8,7 @@ def render(year, selected_race, session_type, session_options):
     st.title(f"Monte Carlo Oracle: {selected_race} {year}")
     
     try:
-        with st.spinner("Initializing predictive engine...", expanded=True) as status:
+        with st.spinner("Initializing predictive engine...") as status:
             session = load_session_basic(year, selected_race, session_options[session_type])
             laps = session.laps
             

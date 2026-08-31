@@ -8,7 +8,7 @@ def render(year, selected_race, session_type, session_options):
     st.title(f"Telemetry Overlays: {selected_race} {year}")
     
     try:
-        with st.spinner("Downloading heavy telemetry (GPS & Car Inputs)...", expanded=True) as status:
+        with st.spinner("Downloading heavy telemetry (GPS & Car Inputs)...") as status:
             session = load_session_telemetry(year, selected_race, session_options[session_type])
             laps = session.laps
             

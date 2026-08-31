@@ -7,7 +7,7 @@ def render(year, selected_race, session_type, session_options):
     st.title(f"Undercut Radar: {selected_race} {year}")
     
     try:
-        with st.spinner("Calculating net time deltas...", expanded=True) as status:
+        with st.spinner("Calculating net time deltas...") as status:
             # We use load_session_basic here because we need TeamColors for the plot
             session = load_session_basic(year, selected_race, session_options[session_type])
             laps = session.laps

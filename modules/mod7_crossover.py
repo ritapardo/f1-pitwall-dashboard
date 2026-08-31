@@ -7,7 +7,7 @@ def render(year, selected_race, session_type, session_options):
     st.title(f"Crossover Point Alert: {selected_race} {year}")
     
     try:
-        with st.spinner("Scanning weather and tire compound data...", expanded=True) as status:
+        with st.spinner("Scanning weather and tire compound data...") as status:
             session = load_session_basic(year, selected_race, session_options[session_type])
             laps = session.laps
             

@@ -6,7 +6,7 @@ def render(year, selected_race, session_type, session_options):
     st.title(f"Tire Degradation Monitor: {selected_race} {year}")
     
     try:
-        with st.spinner("Connecting to FIA Servers...", expanded=True) as status:
+        with st.spinner("Connecting to FIA Servers...") as status:
             st.write("Downloading raw telemetry... (This may take a minute on the first run)")
             # Pull data using the clean utility function
             laps = load_session_laps(year, selected_race, session_options[session_type])

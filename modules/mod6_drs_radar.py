@@ -7,7 +7,7 @@ def render(year, selected_race, session_type, session_options):
     st.title(f"DRS Train Radar: {selected_race} {year}")
     
     try:
-        with st.spinner("Analyzing field intervals and DRS chains...", expanded=True) as status:
+        with st.spinner("Analyzing field intervals and DRS chains...") as status:
             session = load_session_basic(year, selected_race, session_options[session_type])
             laps = session.laps
             

@@ -8,7 +8,7 @@ def render(year, selected_race, session_type, session_options):
     st.title(f"Flash Tactical Alert Engine: {selected_race} {year}")
     
     try:
-        with st.spinner("Analyzing live pit windows, gaps & field compression...", expanded=True) as status:
+        with st.spinner("Analyzing live pit windows, gaps & field compression...") as status:
             laps = load_session_laps(year, selected_race, session_options[session_type])
             results = load_session_results(year, selected_race, session_options[session_type])
 
