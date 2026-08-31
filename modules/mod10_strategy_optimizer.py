@@ -9,9 +9,8 @@ def render(year, selected_race, session_type, session_options):
     st.title(f"Dynamic Strategy Optimizer: {selected_race} {year}")
     
     try:
-        with st.status("Analyzing track telemetry, degradation slopes & pit loss...", expanded=True) as status:
+        with st.spinner("Analyzing track telemetry, degradation slopes & pit loss...", expanded=True) as status:
             laps = load_session_laps(year, selected_race, session_options[session_type])
-            status.update(label="Track intelligence engine ready", state="complete", expanded=False)
             
         clean_laps = laps.dropna(subset=['LapTime', 'Compound', 'TyreLife']).copy()
         clean_laps['Time_Sec'] = clean_laps['LapTime'].dt.total_seconds()
@@ -226,7 +225,7 @@ def render(year, selected_race, session_type, session_options):
             xaxis=dict(title="Race Lap Progress", range=[0, total_race_laps], showgrid=True, gridcolor='#333333'),
             yaxis=dict(showgrid=False), height=380, margin=dict(l=20, r=20, t=20, b=30)
         )
-        st.plotly_chart(timeline_fig, width="stretch")
+        st.plotly_chart(timeline_fig, use_container_width=True)
 
         # 7. STRATEGY COMPARISON DELTA CHART
         st.markdown("### Full Strategy Landscape Ranking")
@@ -241,7 +240,7 @@ def render(year, selected_race, session_type, session_options):
             xaxis=dict(showgrid=True, gridcolor='#333333'), yaxis=dict(autorange="reversed", showgrid=False),
             legend=dict(title="Type", orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
         )
-        st.plotly_chart(bar_fig, width="stretch")
+        st.plotly_chart(bar_fig, use_container_width=True)
 
     except Exception as e:
         st.error(f"Strategy optimization engine failed. (Error: {e})")

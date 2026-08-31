@@ -7,10 +7,9 @@ def render(year, selected_race, session_type, session_options):
     st.title(f"Micro-Sector Battles: {selected_race} {year}")
     
     try:
-        with st.status("Downloading high-resolution GPS telemetry...", expanded=True) as status:
+        with st.spinner("Downloading high-resolution GPS telemetry...", expanded=True) as status:
             session = load_session_telemetry(year, selected_race, session_options[session_type])
             laps = session.laps
-            status.update(label="Telemetry processed successfully", state="complete", expanded=False)
             
         available_drivers = laps['Driver'].dropna().unique()
         
@@ -67,7 +66,7 @@ def render(year, selected_race, session_type, session_options):
                 
                 fig.update_traces(marker=dict(size=12, opacity=1.0))
                 
-                st.plotly_chart(fig, width="stretch")
+                st.plotly_chart(fig, use_container_width=True)
                 
                 st.markdown("### Pace Matrix")
                 d1_time = d1_lap['LapTime'].total_seconds()

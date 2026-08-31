@@ -7,11 +7,10 @@ def render(year, selected_race, session_type, session_options):
     st.title(f"Undercut Radar: {selected_race} {year}")
     
     try:
-        with st.status("Calculating net time deltas...", expanded=True) as status:
-            # We use load_session_telemetry here because we need TeamColors for the plot
+        with st.spinner("Calculating net time deltas...", expanded=True) as status:
+            # We use load_session_basic here because we need TeamColors for the plot
             session = load_session_basic(year, selected_race, session_options[session_type])
             laps = session.laps
-            status.update(label="Gap calculations complete", state="complete", expanded=False)
             
         available_drivers = laps['Driver'].dropna().unique()
         
@@ -66,7 +65,7 @@ def render(year, selected_race, session_type, session_options):
                 yaxis=dict(showgrid=True, gridcolor='#333333', range=[max_visual_gap, min_visual_gap])
             )
             
-            st.plotly_chart(fig, width="stretch")
+            st.plotly_chart(fig, use_container_width=True)
             
             # STRATEGY INTELLIGENCE ENGINE
             target_stops = target_laps['Stint'].max() - 1

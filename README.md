@@ -70,7 +70,7 @@ To run this application on your local machine:
 
 **1. Clone the repository:**
 ```bash
-git clone [https://github.com/ritapardo/f1-pitwall-dashboard](https://github.com/ritapardo/f1-pitwall-dashboard.git)
+git clone https://github.com/ritapardo/f1-pitwall-dashboard.git
 ```
 **2. Install dependencies:**
 ```bash
@@ -106,5 +106,16 @@ To provide a seamless portfolio demonstration, the app is hardcoded to serve **p
 > To render the championship trajectory, this module requires fetching and processing data from *every single race* in the calendar. To prevent memory overloads and API timeouts on the Streamlit cloud servers, this specific module is hidden in the live demo.
 
 **Want to unlock the full dynamic engine?**
-If you run this application locally on your machine (which uses a safe residential IP), you can revert the `app.py` race selection logic to its original dynamic state and analyze any session from 2023 to 2026, including the full Season Evolution module.
+If you run this application locally on your machine (which uses a safe residential IP), you can unlock the unrestricted version to analyze any session from 2023 to 2026, including the full Season Evolution module. 
 
+Simply switch to the dedicated dynamic branch after cloning the repository:
+```bash
+git checkout dynamic-version
+```
+
+---
+
+## 🔮 Future Roadmap (V2.0)
+While the core engine is fully operational, planned improvements for future releases include:
+* **Containerization:** Adding a `Dockerfile` for standardized local deployments.
+* **Automated Testing:** Implementing `pytest` suites for the telemetry rotation matrices and Monte Carlo simulations.

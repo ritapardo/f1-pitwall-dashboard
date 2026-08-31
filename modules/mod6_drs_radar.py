@@ -7,10 +7,9 @@ def render(year, selected_race, session_type, session_options):
     st.title(f"DRS Train Radar: {selected_race} {year}")
     
     try:
-        with st.status("Analyzing field intervals and DRS chains...", expanded=True) as status:
+        with st.spinner("Analyzing field intervals and DRS chains...", expanded=True) as status:
             session = load_session_basic(year, selected_race, session_options[session_type])
             laps = session.laps
-            status.update(label="Interval analysis complete", state="complete", expanded=False)
             
         valid_laps = laps.dropna(subset=['Time', 'Position', 'LapNumber']).copy()
         valid_laps['Position'] = valid_laps['Position'].astype(int)
@@ -125,7 +124,7 @@ def render(year, selected_race, session_type, session_options):
                 legend=dict(title="", orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
             )
             
-            st.plotly_chart(fig, width="stretch")
+            st.plotly_chart(fig, use_container_width=True)
             
         else:
             st.warning("Insufficient timing data available for this lap.")

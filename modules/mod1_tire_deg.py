@@ -6,11 +6,10 @@ def render(year, selected_race, session_type, session_options):
     st.title(f"Tire Degradation Monitor: {selected_race} {year}")
     
     try:
-        with st.status("Connecting to FIA Servers...", expanded=True) as status:
+        with st.spinner("Connecting to FIA Servers...", expanded=True) as status:
             st.write("Downloading raw telemetry... (This may take a minute on the first run)")
             # Pull data using the clean utility function
             laps = load_session_laps(year, selected_race, session_options[session_type])
-            status.update(label="Data processed successfully", state="complete", expanded=False)
         
         # Clean data: drop in-laps and missing compounds
         clean_laps = laps.pick_quicklaps().dropna(subset=['LapTime', 'Compound'])
@@ -64,7 +63,7 @@ def render(year, selected_race, session_type, session_options):
                 yaxis=dict(title="Lap Time (Seconds)", showgrid=True, gridcolor='#333333', autorange="reversed")
             )
             
-            st.plotly_chart(fig, width="stretch")
+            st.plotly_chart(fig, use_container_width=True)
             
     except Exception as e:
         st.error(f"Failed to load race data. (Error: {e})")

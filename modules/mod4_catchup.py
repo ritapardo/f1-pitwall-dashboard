@@ -7,10 +7,9 @@ def render(year, selected_race, session_type, session_options):
     st.title(f"Catch-Up Projection: {selected_race} {year}")
     
     try:
-        with st.status("Analyzing lap pace trends...", expanded=True) as status:
+        with st.spinner("Analyzing lap pace trends...", expanded=True) as status:
             session = load_session_basic(year, selected_race, session_options[session_type])
             laps = session.laps
-            status.update(label="Pace analysis complete", state="complete", expanded=False)
             
         available_drivers = laps['Driver'].dropna().unique()
         total_race_laps = int(laps['LapNumber'].max())
@@ -104,7 +103,7 @@ def render(year, selected_race, session_type, session_options):
                         yaxis=dict(title="Gap (Seconds)", showgrid=True, gridcolor='#333333'),
                         legend=dict(title="")
                     )
-                    st.plotly_chart(fig, width="stretch")
+                    st.plotly_chart(fig, use_container_width=True)
 
             else:
                 st.warning("Not enough laps completed to calculate accurate pace projections. Please wait for lap 6.")

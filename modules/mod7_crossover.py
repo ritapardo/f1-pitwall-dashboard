@@ -7,10 +7,9 @@ def render(year, selected_race, session_type, session_options):
     st.title(f"Crossover Point Alert: {selected_race} {year}")
     
     try:
-        with st.status("Scanning weather and tire compound data...", expanded=True) as status:
+        with st.spinner("Scanning weather and tire compound data...", expanded=True) as status:
             session = load_session_basic(year, selected_race, session_options[session_type])
             laps = session.laps
-            status.update(label="Tire data processed successfully", state="complete", expanded=False)
             
         valid_laps = laps.dropna(subset=['LapTime', 'Compound']).copy()
         valid_laps = valid_laps[(valid_laps['PitInTime'].isnull()) & (valid_laps['PitOutTime'].isnull())]
@@ -69,7 +68,7 @@ def render(year, selected_race, session_type, session_options):
                 legend=dict(title="", orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
             )
             
-            st.plotly_chart(fig, width="stretch")
+            st.plotly_chart(fig, use_container_width=True)
             
         else:
             st.markdown("<div style='padding:15px;background-color:#003311;color:#00FF7F;border-radius:5px; border-left: 5px solid #00FF7F; margin-bottom: 20px;'><b>Stable Weather Session:</b> This session was run entirely on a single tire category. No wet/dry crossover occurred.</div>", unsafe_allow_html=True)

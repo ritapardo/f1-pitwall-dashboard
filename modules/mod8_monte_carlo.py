@@ -8,10 +8,9 @@ def render(year, selected_race, session_type, session_options):
     st.title(f"Monte Carlo Oracle: {selected_race} {year}")
     
     try:
-        with st.status("Initializing predictive engine...", expanded=True) as status:
+        with st.spinner("Initializing predictive engine...", expanded=True) as status:
             session = load_session_basic(year, selected_race, session_options[session_type])
             laps = session.laps
-            status.update(label="Engine ready", state="complete", expanded=False)
             
         available_drivers = laps['Driver'].dropna().unique()
         total_race_laps = int(laps['LapNumber'].max())
@@ -93,7 +92,7 @@ def render(year, selected_race, session_type, session_options):
                         yaxis=dict(title="Number of Simulations", showgrid=True, gridcolor='#333333')
                     )
                     
-                    st.plotly_chart(fig, width="stretch")
+                    st.plotly_chart(fig, use_container_width=True)
             else:
                 st.warning("Not enough laps completed to build a reliable statistical model. Please select a later lap.")
         else:

@@ -8,10 +8,9 @@ def render(year, selected_race, session_type, session_options):
     st.title(f"Telemetry Overlays: {selected_race} {year}")
     
     try:
-        with st.status("Downloading heavy telemetry (GPS & Car Inputs)...", expanded=True) as status:
+        with st.spinner("Downloading heavy telemetry (GPS & Car Inputs)...", expanded=True) as status:
             session = load_session_telemetry(year, selected_race, session_options[session_type])
             laps = session.laps
-            status.update(label="Telemetry engine ready", state="complete", expanded=False)
             
         available_drivers = laps['Driver'].dropna().unique()
         if len(available_drivers) == 0:
@@ -119,7 +118,7 @@ def render(year, selected_race, session_type, session_options):
         fig.update_yaxes(visible=False, showgrid=False, scaleanchor="x", scaleratio=1)
         fig.update_xaxes(visible=False, showgrid=False)
         
-        st.plotly_chart(fig, width="stretch")
+        st.plotly_chart(fig, use_container_width=True)
         
     except Exception as e:
         st.error(f"Failed to generate telemetry map. (Error: {e})")

@@ -8,10 +8,9 @@ def render(year, selected_race, session_type, session_options):
     st.title(f"Flash Tactical Alert Engine: {selected_race} {year}")
     
     try:
-        with st.status("Analyzing live pit windows, gaps & field compression...", expanded=True) as status:
+        with st.spinner("Analyzing live pit windows, gaps & field compression...", expanded=True) as status:
             laps = load_session_laps(year, selected_race, session_options[session_type])
             results = load_session_results(year, selected_race, session_options[session_type])
-            status.update(label="Tactical matrix initialized", state="complete", expanded=False)
 
         clean_laps = laps.dropna(subset=['LapTime', 'Compound', 'TyreLife']).copy()
         clean_laps['Time_Sec'] = clean_laps['LapTime'].dt.total_seconds()
@@ -164,7 +163,7 @@ def render(year, selected_race, session_type, session_options):
             margin=dict(l=20, r=20, t=40, b=20),
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
         )
-        st.plotly_chart(fig, width="stretch")
+        st.plotly_chart(fig, use_container_width=True)
 
     except Exception as e:
         st.error(f"Tactical alert simulation failed. (Error: {e})")

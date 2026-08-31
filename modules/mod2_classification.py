@@ -6,9 +6,8 @@ def render(year, selected_race, session_type, session_options):
     st.title(f"Official Classification: {selected_race} {year}")
     
     try:
-        with st.status("Fetching official results...", expanded=True) as status:
+        with st.spinner("Fetching official results...", expanded=True) as status:
             results = load_session_results(year, selected_race, session_options[session_type])
-            status.update(label="Results loaded successfully", state="complete", expanded=False)
             
         html_content = """
         <div style="background-color: #111111; padding: 20px; border-radius: 10px; border: 1px solid #333;">

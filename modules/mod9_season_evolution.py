@@ -7,9 +7,8 @@ def render(year, selected_race, session_type, session_options):
     st.title(f"Championship Season Evolution: {year}")
     
     try:
-        with st.status("Compiling season and sprint data...", expanded=True) as status:
+        with st.spinner("Compiling season and sprint data...", expanded=True) as status:
             df = get_season_standings(year)
-            status.update(label="Season data loaded successfully", state="complete", expanded=False)
             
         if df.empty:
             st.warning("No completed race data found for this season.")
@@ -53,7 +52,7 @@ def render(year, selected_race, session_type, session_options):
                 yaxis=dict(showgrid=True, gridcolor='#333333', title="Cumulative Points"),
                 legend=dict(title="Driver", orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
             )
-            st.plotly_chart(fig, width="stretch")
+            st.plotly_chart(fig, use_container_width=True)
             
             # Driver Standings Summary Cards with Custom Tags
             st.markdown("### Current Standings (Selected Drivers)")
