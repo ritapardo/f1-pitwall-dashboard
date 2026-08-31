@@ -1,3 +1,5 @@
+**🚀 DYNAMIC VERSION ACTIVATED:** You are currently on the `dynamic-version` branch. This version unlocks all years (2023-2026), live refresh controls, and unrestricted local caching.
+
 # 🏎️ F1 Pit Wall Strategy Dashboard
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://f1-pitwall-dashboard.streamlit.app)
 
@@ -106,7 +108,7 @@ To provide a seamless portfolio demonstration, the app is hardcoded to serve **p
 > To render the championship trajectory, this module requires fetching and processing data from *every single race* in the calendar. To prevent memory overloads and API timeouts on the Streamlit cloud servers, this specific module is hidden in the live demo.
 
 **Want to unlock the full dynamic engine?**
-If you run this application locally on your machine (which uses a safe residential IP), you can unlock the unrestricted version to analyze any session from 2023 to 2026, including the full Season Evolution module. 
+If you run this application locally on your machine (which uses a safe residential IP), you can unlock the unrestricted version to analyze any session from 2018 to 2026, including the full Season Evolution module. 
 
 Simply switch to the dedicated dynamic branch after cloning the repository:
 ```bash

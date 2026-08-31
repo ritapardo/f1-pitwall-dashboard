@@ -1,5 +1,5 @@
 # Ignore FastF1 Cache
-#cache/
+cache/
 cache/fastf1_http_cache.sqlite
 fastf1_http_cache.sqlite
 
