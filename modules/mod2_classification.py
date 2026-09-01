@@ -11,7 +11,7 @@ def render(year, selected_race, session_type, session_options):
             
         html_content = """
         <div style="background-color: #111111; padding: 20px; border-radius: 10px; border: 1px solid #333; overflow-x: auto;">
-            <div style="min-width: 750px;"> 
+            <div style="width: 1000px;"> 
                 <div style="display: flex; border-bottom: 2px solid #555; padding-bottom: 10px; margin-bottom: 10px; font-size: 12px; color: #888; text-transform: uppercase; font-weight: bold;">
                     <div style="width: 10%; text-align: center;">Pos</div>
                     <div style="width: 10%; text-align: center;">No</div>
