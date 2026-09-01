@@ -125,7 +125,7 @@ def render_driver_tag(driver_name, team_color):
     html = f"""
     <div style="display: flex; align-items: center; background-color: #1e1e1e; padding: 6px 14px; border-radius: 4px; border: 1px solid #333333; width: fit-content; margin-bottom: 8px;">
         <div style="width: 8px; height: 20px; background-color: {color}; margin-right: 12px; border-radius: 2px;"></div>
-        <span style="color: #ffffff; font-weight: 700; font-size: 18px; letter-spacing: 1.5px; text-transform: uppercase;">{driver_name}</span>
+        <span style="color: #ffffff; font-weight: 700; font-size: 18px; letter-spacing: 1.5px; text-transform: uppercase; white-space: nowrap;">{driver_name}</span>
     </div>
     """
     return html
